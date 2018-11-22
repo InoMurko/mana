@@ -126,6 +126,18 @@ defmodule JSONRPC2.ManaHandlerTest do
     end
   end
 
+  describe "is eth_protocolVersion method behaving correctly when" do
+    test "without parameters" do
+      protocol_version = Application.get_env(:ex_wire, :protocol_version)
+
+      assert_rpc_reply(
+        SpecHandler,
+        ~s({"jsonrpc": "2.0", "method": "eth_protocolVersion", "params": [], "id": 74}),
+        ~s({"jsonrpc": "2.0", "result": "#{protocol_version}", "id": 74})
+      )
+    end
+  end
+
   defp assert_rpc_reply(handler, call, expected_reply) do
     assert {:reply, reply} = handler.handle(call)
     assert Jason.decode(reply) == Jason.decode(expected_reply)

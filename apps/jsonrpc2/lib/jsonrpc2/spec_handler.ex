@@ -32,7 +32,8 @@ defmodule JSONRPC2.SpecHandler do
   end
 
   # eth Methods
-  def handle_request("eth_protocolVersion", _), do: {:error, :not_supported}
+  def handle_request("eth_protocolVersion", _),
+    do: "#{Application.get_env(:ex_wire, :protocol_version)}"
 
   def handle_request("eth_syncing", _) do
     case @sync.get_last_sync_block_stats() do
